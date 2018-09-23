@@ -9,7 +9,7 @@ key = bytes("This_key_for_demo_purposes_only!", 'utf-8')
 # of 16 bytes
 iv = "InitializationVe"
 print('len ',len(key))
-aes = aes_new.AESModeOfOperationECB(key)
+aes = aes_new.AESModeOfOperationCFB(key, iv = iv, segment_size = 8)
 
 #image
 in_img = Image.open("E:\Work\Report\Python\ilshat\kot.bmp")

@@ -89,7 +89,7 @@ except Exception:
 
     # Python 3 cannot concatenate a list onto a bytes, so we bytes-ify it first
     def _concat_list(a, b):
-        return a + bytes(b)
+        return a + b
 
 
 # Based *largely* on the Rijndael implementation
@@ -425,10 +425,12 @@ class AESModeOfOperationCFB(AESSegmentModeOfOperation):
     segment_bytes = property(lambda s: s._segment_bytes)
 
     def encrypt(self, plaintext):
-        if len(plaintext) % self._segment_bytes != 0:
-            raise ValueError('plaintext block must be a multiple of segment_size')
 
-        plaintext = _string_to_bytes(plaintext)
+
+        #plaintext = _string_to_bytes(plaintext)
+
+        #plaintext = list(_string_to_bytes('asdfgdfgrdththhjkl'))
+        #print('out_plaintext: ',plaintext)
 
         # Break block into segments
         encrypted = [ ]
