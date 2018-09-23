@@ -12,7 +12,7 @@ mode = 'CTR'
 #aes = aes_new.AESModeOfOperationCFB(key, iv = iv, segment_size = 8)
 #aes = aes_new.AESModeOfOperationOFB(key, iv = iv)
 counter = aes_new.Counter(initial_value = 1000000)
-aes = aes_new.AESModeOfOperationCTR(key, counter = counter)
+aes = aes_new.AESModeOfOperationCTR_fast(key, counter = counter)
 
 #image
 in_img = Image.open("E:\Work\Report\Python\ilshat\kot.bmp")
