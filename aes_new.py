@@ -498,7 +498,7 @@ class AESModeOfOperationOFB(AESStreamModeOfOperation):
 
     def encrypt(self, plaintext):
         encrypted = [ ]
-        for p in _string_to_bytes(plaintext):
+        for p in plaintext:
             if len(self._remaining_block) == 0:
                 self._remaining_block = self._aes.encrypt(self._last_precipherblock)
                 self._last_precipherblock = [ ]
@@ -557,9 +557,8 @@ class AESModeOfOperationCTR(AESStreamModeOfOperation):
         while len(self._remaining_counter) < len(plaintext):
             self._remaining_counter += self._aes.encrypt(self._counter.value)
             self._counter.increment()
-
-        plaintext = _string_to_bytes(plaintext)
-
+#show counter encrypted by ilshat
+#            print('counter', self._remaining_counter, '\n')
         encrypted = [ (p ^ c) for (p, c) in zip(plaintext, self._remaining_counter) ]
         self._remaining_counter = self._remaining_counter[len(encrypted):]
 
