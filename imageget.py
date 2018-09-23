@@ -1,6 +1,6 @@
 from PIL import Image
 import test_image
-import pyaes
+import aes_new
 #encr params
 # A 256 bit (32 byte) key
 key = bytes("This_key_for_demo_purposes_only!", 'utf-8') 
@@ -9,7 +9,7 @@ key = bytes("This_key_for_demo_purposes_only!", 'utf-8')
 # of 16 bytes
 iv = "InitializationVe"
 print('len ',len(key))
-aes = pyaes.AESModeOfOperationECB(key)
+aes = aes_new.AESModeOfOperationECB(key)
 
 #image
 in_img = Image.open("E:\Work\Report\Python\ilshat\kot.bmp")

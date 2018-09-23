@@ -1,4 +1,4 @@
-import pyaes
+import aes_new
 import os
 import sys
 def encrypt(input, key, aes, iv):
