@@ -53,6 +53,7 @@
 
 import copy
 import struct
+import os
 
 __all__ = ["AES", "AESModeOfOperationCTR", "AESModeOfOperationCBC", "AESModeOfOperationCFB",
            "AESModeOfOperationECB", "AESModeOfOperationOFB", "AESModesOfOperation", "Counter"]
@@ -567,6 +568,68 @@ class AESModeOfOperationCTR(AESStreamModeOfOperation):
     def decrypt(self, crypttext):
         # AES-CTR is symetric
         return self.encrypt(crypttext)
+
+
+
+#Modifyed fast CTR by ilsh
+class AESModeOfOperationCTR_fast(AESStreamModeOfOperation):
+    '''AES Counter Mode of Operation.
+
+       o A stream-cipher, so input does not need to be padded to blocks,
+         allowing arbitrary length data.
+       o The counter must be the same size as the key size (ie. len(key))
+       o Each block independant of the other, so a corrupt byte will not
+         damage future blocks.
+       o Each block has a uniue counter value associated with it, which
+         contributes to the encrypted value, so no data patterns are
+         leaked.
+       o Also known as: Counter Mode (CM), Integer Counter Mode (ICM) and
+         Segmented Integer Counter (SIC
+
+   Security Notes:
+       o This method (and CBC) ARE recommended.
+       o Each message block is associated with a counter value which must be
+         unique for ALL messages with the same key. Otherwise security may be
+         compromised.
+
+    Also see:
+
+       o https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_.28CTR.29
+       o See NIST SP800-38A (http://csrc.nist.gov/publications/nistpubs/800-38a/sp800-38a.pdf); section 6.5
+         and Appendix B for managing the initial counter'''
+
+
+    name = "Counter (CTR)"
+
+    def __init__(self, key, counter = None):
+        AESBlockModeOfOperation.__init__(self, key)
+
+        if counter is None:
+            counter = Counter()
+
+        self._counter = counter
+        self._remaining_counter = [ ]
+
+    def encrypt(self, plaintext):
+        encr_ctr = open('CTR.txt', 'w')
+        while len(self._remaining_counter) < len(plaintext):
+            self._remaining_counter += self._aes.encrypt(self._counter.value)
+            self._counter.increment()
+#write counter encrypted by ilshat
+            temp_ilsh = str(self._remaining_counter)
+            encr_ctr.write(temp_ilsh)
+        encr_ctr.close()
+        encrypted = [ (p ^ c) for (p, c) in zip(plaintext, self._remaining_counter) ]
+        self._remaining_counter = self._remaining_counter[len(encrypted):]
+
+        return _bytes_to_string(encrypted)
+
+    def decrypt(self, crypttext):
+        # AES-CTR is symetric
+        return self.encrypt(crypttext)
+
+
+
 
 
 # Simple lookup table for each mode
