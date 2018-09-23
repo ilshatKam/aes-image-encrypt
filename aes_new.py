@@ -53,6 +53,7 @@
 
 import copy
 import struct
+import pickle
 
 __all__ = ["AES", "AESModeOfOperationCTR", "AESModeOfOperationCBC", "AESModeOfOperationCFB",
            "AESModeOfOperationECB", "AESModeOfOperationOFB", "AESModesOfOperation", "Counter"]
@@ -611,9 +612,9 @@ class AESModeOfOperationCTR_fast(AESStreamModeOfOperation):
         self._remaining_counter = [ ]
 
     def encrypt(self, plaintext):
-        encr_ctr = open('CTR.txt', 'r')
+        encr_ctr = open('CTR.txt', 'rb')
         while len(self._remaining_counter) < len(plaintext):
-            self._remaining_counter += list(encr_ctr.readline())
+            self._remaining_counter += pickle.load(encr_ctr)
             self._counter.increment()
 #write counter encrypted by ilshat
         encr_ctr.close()
