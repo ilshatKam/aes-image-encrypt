@@ -613,7 +613,7 @@ class AESModeOfOperationCTR_fast(AESStreamModeOfOperation):
     def encrypt(self, plaintext):
         encr_ctr = open('CTR.txt', 'r')
         while len(self._remaining_counter) < len(plaintext):
-            self._remaining_counter += encr_ctr.readline()
+            self._remaining_counter += list(encr_ctr.readline())
             self._counter.increment()
 #write counter encrypted by ilshat
         encr_ctr.close()
