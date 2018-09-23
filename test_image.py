@@ -1,16 +1,7 @@
 import pyaes
 import os
 import sys
-def encrypt(input):
-    # A 256 bit (32 byte) key
-    key = bytes("This_key_for_demo_purposes_only!", 'utf-8') 
-    
-    # For some modes of operation we need a random initialization vector
-    # of 16 bytes
-    iv = "InitializationVe"
-    print('len ',len(key))
-    aes = pyaes.AESModeOfOperationECB(key)
-    
+def encrypt(input, key, aes, iv):
     #input = [255, 255, 255, 255, 5, 6, 7, 7, 7, 7, 11, 12, 13, 254, 15, 240]
     plaintext = [0, 0, 0, 0]
     i = 0
